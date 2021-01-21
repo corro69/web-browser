@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
 
 		self.browser = QWebEngineView() 
 
-		self.browser.setUrl(QUrl("http://google.com")) 
+		self.browser.setUrl(QUrl("https://duckduckgo.com")) 
 
 		self.browser.urlChanged.connect(self.update_urlbar) 
 
@@ -59,7 +59,9 @@ class MainWindow(QMainWindow):
 		stop_btn.setStatusTip("Stop loading current page") 
 		stop_btn.triggered.connect(self.browser.stop) 
 		navtb.addAction(stop_btn)
-
+		
+		self._createMenuBar()
+		
 		self.show() 
 
 	def update_title(self): 
@@ -67,7 +69,7 @@ class MainWindow(QMainWindow):
 		self.setWindowTitle("% s - Dustin's Browser" % title) 
 
 	def navigate_home(self): 
-		self.browser.setUrl(QUrl("http://www.google.com")) 
+		self.browser.setUrl(QUrl("http://www.duckduckgo.com")) 
  
 	def navigate_to_url(self):  
 		q = QUrl(self.urlbar.text()) 
@@ -85,6 +87,8 @@ class MainWindow(QMainWindow):
 		menuBar = QMenuBar(self) 
 		self.setMenuBar(menuBar)
 		fileMenu = menuBar.addMenu('file')
+		settingsMenu = menuBar.addMenu('settings')
+		aboutMenu = menubar.addMenu('about")
 
 app = QApplication(sys.argv) 
 
