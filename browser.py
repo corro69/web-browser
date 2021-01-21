@@ -86,9 +86,22 @@ class MainWindow(QMainWindow):
 	def _createMenuBar(self): 
 		menuBar = QMenuBar(self) 
 		self.setMenuBar(menuBar)
-		fileMenu = menuBar.addMenu('file')
-		settingsMenu = menuBar.addMenu('settings')
-		aboutMenu = menubar.addMenu('about")
+		fileMenu = menuBar.addMenu('File')
+		settingsMenu = menuBar.addMenu('Settings')
+		aboutMenu = menubar.addMenu('About")
+					    
+	    	exitButton = QAction('EXIT',self)
+		fileMenu.addAction(exitButton)
+		exitButton.triggered.connect(self.close)
+
+		aboutButton = QAction('About', self)
+		aboutMenu.addAction(aboutButton)
+		aboutButton.triggered.connect(self.about)
+	
+	def about(self,event):
+		reply = QMessageBox.question(self, "Dustin's Web Browser","Dustin's Web-browser \n version .01 1/20/2021",QMessageBox.Close | QMessageBox.Ok, QMessageBox.Ok)
+		if reply == QMessageBox.Ok or QMessageBox.Close:
+			event.accept()
 
 app = QApplication(sys.argv) 
 
