@@ -1,3 +1,7 @@
+from nturl2path import url2pathname
+import tempfile
+from unittest import result
+import webbrowser
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -6,6 +10,7 @@ from PyQt5.QtPrintSupport import *
 
 import os
 import sys
+import click
 
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
@@ -94,6 +99,11 @@ class MainWindow(QMainWindow):
         stop_btn.triggered.connect(lambda: self.tabs.currentWidget().stop())
         navtb.addAction(stop_btn)
 
+        new_tab_action = QAction(QIcon(os.path.join('images','ui-tab--plus.png')),"New Tab", self)
+        new_tab_action.setStatusTip('New Tab')
+        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
+        navtb.addAction(new_tab_action)
+
         file_menu = self.menuBar().addMenu("&File")
 
         new_tab_action = QAction(QIcon(os.path.join('images', 'ui-tab--plus.png')), "New Tab", self)
@@ -138,6 +148,12 @@ class MainWindow(QMainWindow):
         self.show()
 
         self.setWindowTitle("Dustin's Web_browser")
+
+        self.setStyleSheet("""
+            background-color: #212120;
+            color: #f7f7f5;
+            font-size:16px;
+            """)
 
     def add_new_tab(self, qurl=None, label="New Tab"):
 
