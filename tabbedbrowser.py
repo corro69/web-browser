@@ -1,16 +1,22 @@
 from nturl2path import url2pathname
 import tempfile
 from unittest import result
+from urllib.parse import urlparse
 import webbrowser
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtPrintSupport import *
-
+import pickle
 import os
 import sys
 import click
+from array import*
+import urllib
+from urlextract import URLExtract
+from PyQt5.QtWidgets import QToolBar
+import tempfile
 
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
@@ -56,13 +62,8 @@ class MainWindow(QMainWindow):
         self.setStatusBar(self.status)
 
         navtb = QToolBar("Navigation")
-        navtb.setIconSize(QSize(16, 16))
+        navtb.setIconSize(QSize(18, 18))
         self.addToolBar(navtb)
-
-        new_tab_action = QAction(QIcon(os.path.join('images','ui-tab--plus.png')),"New Tab", self)
-        new_tab_action.setStatusTip('New Tab')
-        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
-        navtb.addAction(new_tab_action)
 
         back_btn = QAction(QIcon(os.path.join('images', 'arrow-180.png')), "Back", self)
         back_btn.setStatusTip("Back to previous page")
@@ -79,10 +80,22 @@ class MainWindow(QMainWindow):
         reload_btn.triggered.connect(lambda: self.tabs.currentWidget().reload())
         navtb.addAction(reload_btn)
 
+        stop_btn = QAction(QIcon(os.path.join('images', 'cross-circle.png')), "Stop", self)
+        stop_btn.setStatusTip("Stop loading current page")
+        stop_btn.triggered.connect(lambda: self.tabs.currentWidget().stop())
+        navtb.addAction(stop_btn)
+
         home_btn = QAction(QIcon(os.path.join('images', 'home.png')), "Home", self)
         home_btn.setStatusTip("Go home")
         home_btn.triggered.connect(self.navigate_home)
         navtb.addAction(home_btn)
+
+        navtb.addSeparator()
+
+        new_tab_action = QAction(QIcon(os.path.join('images','ui-tab--plus.png')),"New Tab", self)
+        new_tab_action.setStatusTip('New Tab')
+        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
+        navtb.addAction(new_tab_action)
 
         navtb.addSeparator()
 
@@ -94,16 +107,21 @@ class MainWindow(QMainWindow):
         self.urlbar.returnPressed.connect(self.navigate_to_url)
         navtb.addWidget(self.urlbar)
 
-        stop_btn = QAction(QIcon(os.path.join('images', 'cross-circle.png')), "Stop", self)
-        stop_btn.setStatusTip("Stop loading current page")
-        stop_btn.triggered.connect(lambda: self.tabs.currentWidget().stop())
-        navtb.addAction(stop_btn)
-
-        new_tab_action = QAction(QIcon(os.path.join('images','ui-tab--plus.png')),"New Tab", self)
-        new_tab_action.setStatusTip('New Tab')
-        new_tab_action.triggered.connect(lambda _: self.add_new_tab())
+        new_tab_action = QAction(QIcon(os.path.join('images','bookmark2.png')),"Create Bookmark", self)
+        new_tab_action.setStatusTip('Bookmark This Page')
+        new_tab_action.triggered.connect(lambda _: self.create_bookmark())
         navtb.addAction(new_tab_action)
 
+        new_tab_action = QAction(QIcon(os.path.join('images','bookmark.png')),"Bookmarks", self)
+        new_tab_action.setStatusTip('Your Bookmarks')
+        new_tab_action.triggered.connect(lambda _: self.bookmark_tab())
+        navtb.addAction(new_tab_action)
+
+###
+###
+###FILE MENU
+###
+###
         file_menu = self.menuBar().addMenu("&File")
 
         new_tab_action = QAction(QIcon(os.path.join('images', 'ui-tab--plus.png')), "New Tab", self)
@@ -129,7 +147,18 @@ class MainWindow(QMainWindow):
         exitButton = QAction('EXIT', self)
         file_menu.addAction(exitButton)
         exitButton.triggered.connect(self.close)
+###
+###
+###EDIT MENU
+###
+###
 
+        edit_menu = self.menuBar().addMenu("&Edit")
+###
+###
+###HELP MENU
+###
+###
         help_menu = self.menuBar().addMenu("&Help")
 
         about_action = QAction(QIcon(os.path.join('images', 'question.png')), "About Dustin's Web-Browser", self)
@@ -143,6 +172,31 @@ class MainWindow(QMainWindow):
         navigate_massconceptz_action.triggered.connect(self.navigate_massconceptz)
         help_menu.addAction(navigate_massconceptz_action)
 
+        navtb.addSeparator()
+####
+####
+###BOOKMARKS MENU
+####
+####
+#        bookmarks_menu = self.menuBar().addMenu("&Bookmarks")
+#
+#        bookmark_action = QAction(QIcon(os.path.join("images",'bookmark.png')),"Create Bookmark",self)
+#        bookmark_action.setStatusTip("Bookmark Current Page")
+#        bookmark_action.triggered.connect(self.create_bookmark)
+#        bookmarks_menu.addAction(bookmark_action)
+#
+#        bookmark_action = QAction(QIcon(os.path.join('images', 'bookmark.png')), "Bookmarks", self)
+#        bookmark_action.setStatusTip("Bookmarks")
+#        bookmark_action.triggered.connect(lambda _: self.bookmark_tab())
+#        bookmarks_menu.addAction(bookmark_action)
+#
+#        tools = bookmarks_menu.addMenu('&Tools')
+#        prevMenu = tools.addMenu('Preview') ##testing ideas
+#        prevAction = prevMenu.addAction('Using &Nuke')  ##testing
+#
+###
+###
+###
         self.add_new_tab(QUrl('http://www.duckduckgo.com'), 'Homepage')
 
         self.show()
@@ -150,13 +204,12 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Dustin's Web_browser")
 
         self.setStyleSheet("""
-            background-color: #212120;
+            background-color: #3b393c;
             color: #f7f7f5;
-            font-size:16px;
+            font-size:18px;
             """)
 
     def add_new_tab(self, qurl=None, label="New Tab"):
-
         if qurl is None:
             qurl = QUrl('https://duckduckgo.com')
 
@@ -172,6 +225,39 @@ class MainWindow(QMainWindow):
         browser.loadFinished.connect(lambda _, i=i, browser=browser:
                                      self.tabs.setTabText(i, browser.page().title()))
 
+    def bookmark_tab(self, qurl="Bookmarks", label="Bookmarks"):
+        if qurl == "Bookmarks":
+            qurl = QUrl("file:///home/dustin/Downloads/web-browser/bookmarks.html")
+        browser = QWebEngineView()
+        browser.setUrl(qurl)
+        i = self.tabs.addTab(browser, label)
+        self.tabs.setCurrentIndex(i)
+ #       pickle_in = open("bookmarked.dat","rb")
+ #       bookmarked_save = pickle.load(pickle_in)
+ #       extractor = URLExtract()
+#        urls = extractor.find_urls(bookmarked_save)
+#        print(urls)
+#        with open("bookmarks.txt", 'r') as G:
+#            urls = extractor.find_urls(G.read())
+        #    print(G.read())
+#            print (urls)
+#        self.tabs.currentWidget().setUrl(QUrl("bookmarks.txt"))     
+
+    def create_bookmark(self):
+        f = QUrl(self.urlbar.text())
+        bookmarked_save = str(f)
+#        extractor = URLExtract()
+#        urls = extractor.find_urls(bookmarked_save)
+#        pickle_out = open("bookmarked.dat","wb")
+#        pickle.dump(bookmarked_save, pickle_out)
+#        pickle_out.close()
+#        print (bookmarked_save)
+        file_object = open("bookmarks.html",'a')
+        file_object.write(bookmarked_save)
+        file_object.write("\n")
+        
+        file_object.close()
+                                
     def tab_open_doubleclick(self, i):
         if i == -1:
             self.add_new_tab()
