@@ -1,0 +1,4 @@
+PyQt5.QtCore.QUrl('bookmarks.dat')
+PyQt5.QtCore.QUrl('https://www.google.com/')
+PyQt5.QtCore.QUrl('https://www.google.com/')
+PyQt5.QtCore.QUrl('https://outlook.live.com/owa/')

@@ -147,13 +147,7 @@ class MainWindow(QMainWindow):
         exitButton = QAction('EXIT', self)
         file_menu.addAction(exitButton)
         exitButton.triggered.connect(self.close)
-###
-###
-###EDIT MENU
-###
-###
-
-        edit_menu = self.menuBar().addMenu("&Edit")
+        
 ###
 ###
 ###HELP MENU
@@ -175,39 +169,18 @@ class MainWindow(QMainWindow):
         navtb.addSeparator()
 ####
 ####
-###BOOKMARKS MENU
 ####
-####
-#        bookmarks_menu = self.menuBar().addMenu("&Bookmarks")
-#
-#        bookmark_action = QAction(QIcon(os.path.join("images",'bookmark.png')),"Create Bookmark",self)
-#        bookmark_action.setStatusTip("Bookmark Current Page")
-#        bookmark_action.triggered.connect(self.create_bookmark)
-#        bookmarks_menu.addAction(bookmark_action)
-#
-#        bookmark_action = QAction(QIcon(os.path.join('images', 'bookmark.png')), "Bookmarks", self)
-#        bookmark_action.setStatusTip("Bookmarks")
-#        bookmark_action.triggered.connect(lambda _: self.bookmark_tab())
-#        bookmarks_menu.addAction(bookmark_action)
-#
-#        tools = bookmarks_menu.addMenu('&Tools')
-#        prevMenu = tools.addMenu('Preview') ##testing ideas
-#        prevAction = prevMenu.addAction('Using &Nuke')  ##testing
-#
-###
-###
-###
         self.add_new_tab(QUrl('http://www.google.com'), 'Homepage')
 
         self.show()
 
         self.setWindowTitle("Dustin's Web_browser")
 
-        self.setStyleSheet("""
-            background-color: #3b393c;
-            color: #f7f7f5;
-            font-size:18px;
-            """)
+ #       self.setStyleSheet("""
+ #           background-color: #3b393c;
+ #           color: #f7f7f5;
+ #           font-size:18px;
+ #           """)
 
     def add_new_tab(self, qurl=None, label="New Tab"):
         if qurl is None:
@@ -231,27 +204,11 @@ class MainWindow(QMainWindow):
         browser = QWebEngineView()
         browser.setUrl(qurl)
         i = self.tabs.addTab(browser, label)
-        self.tabs.setCurrentIndex(i)
- #       pickle_in = open("bookmarked.dat","rb")
- #       bookmarked_save = pickle.load(pickle_in)
- #       extractor = URLExtract()
-#        urls = extractor.find_urls(bookmarked_save)
-#        print(urls)
-#        with open("bookmarks.txt", 'r') as G:
-#            urls = extractor.find_urls(G.read())
-        #    print(G.read())
-#            print (urls)
-#        self.tabs.currentWidget().setUrl(QUrl("bookmarks.txt"))     
+        self.tabs.setCurrentIndex(i)   
 
     def create_bookmark(self):
         f = QUrl(self.urlbar.text())
         bookmarked_save = str(f)
-#        extractor = URLExtract()
-#        urls = extractor.find_urls(bookmarked_save)
-#        pickle_out = open("bookmarked.dat","wb")
-#        pickle.dump(bookmarked_save, pickle_out)
-#        pickle_out.close()
-#        print (bookmarked_save)
         file_object = open("bookmarks.html",'a')
         file_object.write(bookmarked_save)
         file_object.write("\n")
