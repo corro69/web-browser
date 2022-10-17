@@ -4,6 +4,8 @@ from optparse import Values
 import PySimpleGUI as sg
 from pathlib import Path
 
+home = str(Path.home())
+
 sg.theme('DarkGray6')
 
 sg.set_options(button_element_size=(12, 1),
@@ -71,7 +73,7 @@ def Save_Data():
         "user_font-size": yy,
     }
 
-    with open("dweb-settings.ini","w") as f:
+    with open(home + "/.dweb/dweb-settings.ini","w") as f:
         config.write(f)
 
 #    import settings_read
@@ -83,10 +85,10 @@ def Save_Data():
     window['OUTPUT5'].update(yy)
 
 def load_data():
-    config.read("dweb-settings.ini") 
+    config.read(home + "/.dweb/dweb-settings.ini") 
 
 def Print_Data():
-        config_data = config.read["dweb-settings.ini"]
+        config_data = config.read[home + "/.dweb/dweb-settings.ini"]
         print(config_data)
 
 while True:

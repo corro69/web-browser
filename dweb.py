@@ -29,7 +29,7 @@ temp_dir = tempfile.gettempdir()
 ###settings###########
 
 def load_settings_data():
-    config.read("dweb-settings.ini",[DEFAULT_settings])
+    config.read(home +"/.dweb/dweb-settings.ini",[DEFAULT_settings])
 
 homepage_url = "https://www.google.com"
 default_font_size = 20
@@ -89,34 +89,34 @@ class MainWindow(QMainWindow):
         navtb.setIconSize(QSize(default_font_size, default_font_size))
         self.addToolBar(navtb)
 ###BACK
-        back_btn = QAction(QIcon(os.path.join('images', 'arrow-180.png')), "Back", self)
+        back_btn = QAction(QIcon(os.path.join('/opt/dweb/images', 'arrow-180.png')), "Back", self)
         back_btn.setStatusTip("Back to previous page")
         back_btn.triggered.connect(lambda: self.tabs.currentWidget().back())
         navtb.addAction(back_btn)
 ###NEXT
-        next_btn = QAction(QIcon(os.path.join('images', 'arrow-000.png')), "Forward", self)
+        next_btn = QAction(QIcon(os.path.join('/opt/dweb/images', 'arrow-000.png')), "Forward", self)
         next_btn.setStatusTip("Forward to next page")
         next_btn.triggered.connect(lambda: self.tabs.currentWidget().forward())
         navtb.addAction(next_btn)
 ###RELOAD
-        reload_btn = QAction(QIcon(os.path.join('images', 'arrow-circle-315.png')), "Reload", self)
+        reload_btn = QAction(QIcon(os.path.join('/opt/dweb/images', 'arrow-circle-315.png')), "Reload", self)
         reload_btn.setStatusTip("Reload page")
         reload_btn.triggered.connect(lambda: self.tabs.currentWidget().reload())
         navtb.addAction(reload_btn)
 ###STOP
-        stop_btn = QAction(QIcon(os.path.join('images', 'cross-circle.png')), "Stop", self)
+        stop_btn = QAction(QIcon(os.path.join('/opt/dweb/images', 'cross-circle.png')), "Stop", self)
         stop_btn.setStatusTip("Stop loading current page")
         stop_btn.triggered.connect(lambda: self.tabs.currentWidget().stop())
         navtb.addAction(stop_btn)
 ###HOME
-        home_btn = QAction(QIcon(os.path.join('images', 'home.png')), "Home", self)
+        home_btn = QAction(QIcon(os.path.join('/opt/dweb/images', 'home.png')), "Home", self)
         home_btn.setStatusTip("Go home")
         home_btn.triggered.connect(self.navigate_home)
         navtb.addAction(home_btn)
 
         navtb.addSeparator()
 ###NEW TAB
-        new_tab_action = QAction(QIcon(os.path.join('images','ui-tab--plus.png')),"New Tab", self)
+        new_tab_action = QAction(QIcon(os.path.join('/opt/dweb/images','ui-tab--plus.png')),"New Tab", self)
         new_tab_action.setStatusTip('New Tab')
         new_tab_action.triggered.connect(lambda _: self.add_new_tab())
         navtb.addAction(new_tab_action)
@@ -124,19 +124,19 @@ class MainWindow(QMainWindow):
         navtb.addSeparator()
 ###NAV BAR
         self.httpsicon = QLabel()
-        self.httpsicon.setPixmap(QPixmap(os.path.join('images', 'lock-nossl.png')))
+        self.httpsicon.setPixmap(QPixmap(os.path.join('/opt/dweb/images', 'lock-nossl.png')))
         navtb.addWidget(self.httpsicon)
 
         self.urlbar = QLineEdit()
         self.urlbar.returnPressed.connect(self.navigate_to_url)
         navtb.addWidget(self.urlbar)
 ###BOOKMARKS
-        new_tab_action = QAction(QIcon(os.path.join('images','bookmark2.png')),"Create Bookmark", self)
+        new_tab_action = QAction(QIcon(os.path.join('/opt/dweb/images','bookmark2.png')),"Create Bookmark", self)
         new_tab_action.setStatusTip('Bookmark This Page')
         new_tab_action.triggered.connect(lambda _: self.create_bookmark())
         navtb.addAction(new_tab_action)
 
-        new_tab_action = QAction(QIcon(os.path.join('images','bookmark.png')),"Bookmarks", self)
+        new_tab_action = QAction(QIcon(os.path.join('/opt/dweb/images','bookmark.png')),"Bookmarks", self)
         new_tab_action.setStatusTip('Your Bookmarks')
         new_tab_action.triggered.connect(lambda _: self.bookmark_tab())
         navtb.addAction(new_tab_action)
@@ -148,27 +148,27 @@ class MainWindow(QMainWindow):
 ###
         file_menu = self.menuBar().addMenu("&File")
 
-        new_tab_action = QAction(QIcon(os.path.join('images', 'ui-tab--plus.png')), "New Tab", self)
+        new_tab_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'ui-tab--plus.png')), "New Tab", self)
         new_tab_action.setStatusTip("Open a new tab")
         new_tab_action.triggered.connect(lambda _: self.add_new_tab())
         file_menu.addAction(new_tab_action)
 
-        open_file_action = QAction(QIcon(os.path.join('images', 'disk--arrow.png')), "Open file...", self)
+        open_file_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'disk--arrow.png')), "Open file...", self)
         open_file_action.setStatusTip("Open from file")
         open_file_action.triggered.connect(self.open_file)
         file_menu.addAction(open_file_action)
 
-        save_file_action = QAction(QIcon(os.path.join('images', 'disk--pencil.png')), "Save Page As...", self)
+        save_file_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'disk--pencil.png')), "Save Page As...", self)
         save_file_action.setStatusTip("Save current page to file")
         save_file_action.triggered.connect(self.save_file)
         file_menu.addAction(save_file_action)
 
-        print_action = QAction(QIcon(os.path.join('images', 'printer.png')), "Print...", self)
+        print_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'printer.png')), "Print...", self)
         print_action.setStatusTip("Print current page")
         print_action.triggered.connect(self.print_page)
         file_menu.addAction(print_action)
 
-        settings_action = QAction(QIcon(os.path.join('images', 'ui-tab--plus.png')), "Settings", self)
+        settings_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'ui-tab--plus.png')), "Settings", self)
         settings_action.setStatusTip("Settings")
         settings_action.triggered.connect(self.settings)
         file_menu.addAction(settings_action)
@@ -184,12 +184,12 @@ class MainWindow(QMainWindow):
 ###
         help_menu = self.menuBar().addMenu("&Help")
 
-        about_action = QAction(QIcon(os.path.join('images', 'question.png')), "About Dustin's Web-Browser", self)
+        about_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'question.png')), "About Dustin's Web-Browser", self)
         about_action.setStatusTip("Find out more about Dustin's Web-Browser")
         about_action.triggered.connect(self.about)
         help_menu.addAction(about_action)
 
-        navigate_massconceptz_action = QAction(QIcon(os.path.join('images', 'massconceptz.png')),
+        navigate_massconceptz_action = QAction(QIcon(os.path.join('/opt/dweb/images', 'massconceptz.png')),
                                             "Massconceptz", self)
         navigate_massconceptz_action.setStatusTip("Go to MassConceptZ Homepage")
         navigate_massconceptz_action.triggered.connect(self.navigate_massconceptz)
@@ -234,12 +234,18 @@ class MainWindow(QMainWindow):
 
     def bookmark_tab(self, qurl="Bookmarks", label="Bookmarks"):
         import read_bookmarks
+        if qurl == "Bookmarks":
+            qurl = QUrl("file://" + home +"/.dweb/bookmarks.dat")
+        browser = QWebEngineView()
+        browser.setUrl(qurl)
+        i = self.tabs.addTab(browser, label)
+        self.tabs.setCurrentIndex(i)
 
     def create_bookmark(self):
-        if QUrl(self.urlbar.text()) != 'home +"/Downloads/web-browser/bookmarks.dat"':
+        if QUrl(self.urlbar.text()) != 'home +"/.dweb/bookmarks.dat"':
             f = QUrl(self.urlbar.text())
             bookmarked_save = str(f)
-            file_object = open(home +"/Downloads/web-browser/bookmarks.dat",'a')
+            file_object = open(home +"/.dweb/bookmarks.dat",'a')
             file_object.write(bookmarked_save)
             file_object.write("\n") 
             file_object.close()
@@ -324,10 +330,10 @@ class MainWindow(QMainWindow):
             return
 
         if q.scheme() == 'https':
-            self.httpsicon.setPixmap(QPixmap(os.path.join('images', 'lock-ssl.png')))
+            self.httpsicon.setPixmap(QPixmap(os.path.join('/opt/dweb/images', 'lock-ssl.png')))
 
         else:
-            self.httpsicon.setPixmap(QPixmap(os.path.join('images', 'lock-nossl.png')))
+            self.httpsicon.setPixmap(QPixmap(os.path.join('/opt/dweb/images', 'lock-nossl.png')))
 
         self.urlbar.setText(q.toString())
         self.urlbar.setCursorPosition(0)

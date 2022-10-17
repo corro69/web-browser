@@ -1,5 +1,9 @@
 import PySimpleGUI as sg
 import os
+import sys
+from pathlib import Path
+
+home = str(Path.home())
 
 ### WINDOW ###
 sg.theme('DarkGray6')
@@ -27,7 +31,7 @@ window = sg.Window("Bookmarks",layout, size=(400,400), finalize=True)
 while True:
     event, values = window.read()
 
-    file = open("bookmarks.dat","r")
+    file = open(home + "/.dweb/bookmarks.dat","r")
     read = file.readlines()
     modified = []
     modified1 = []
@@ -44,7 +48,7 @@ while True:
     for line in modified2:
         modified3.append(line.replace("file:///home/dustin/Downloads/web-browser/bookmarks.dat",""))
 
-        with open('bookmarks.dat','w') as writer:
+        with open(home + '/.dweb/bookmarks.dat','w') as writer:
             for x in modified3:
                 writer.write(x)
         
@@ -56,6 +60,6 @@ while True:
 
     window['OUTPUT1'].update(x)
 
-writer.close()
+#writer.close()
 
 window.close()
