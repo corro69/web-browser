@@ -1,5 +1,6 @@
 from nturl2path import url2pathname
 import tempfile
+from turtle import update
 from unittest import result
 from urllib.parse import urlparse
 from PyQt5.QtCore import *
@@ -7,7 +8,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtPrintSupport import *
-import browser
 import os
 import sys
 from array import*
@@ -16,8 +16,10 @@ from PyQt5.QtWidgets import QToolBar
 from pathlib import Path
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import pickle
+from configparser import ConfigParser
 
-#import settings
+config = ConfigParser()
 
 home = str(Path.home())
 temp = tempfile.TemporaryFile()
@@ -26,22 +28,19 @@ temp_dir = tempfile.gettempdir()
 ###settings###########
 ###settings###########
 
-
+def load_settings_data():
+    config.read("dweb-settings.ini",[DEFAULT_settings])
 
 homepage_url = "https://www.google.com"
-default_font_size = 22
+default_font_size = 20
 style_sheet = """
             background-color: #3b393c;
             color: #f7f7f5;
-            font-size:22px;
+            font-size:20px;
             """
-            
-#settings = ("file://" + home +"/.dweb/settings.dat")
-
 
 ######################
 ######################
-
 
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
@@ -169,6 +168,11 @@ class MainWindow(QMainWindow):
         print_action.triggered.connect(self.print_page)
         file_menu.addAction(print_action)
 
+        settings_action = QAction(QIcon(os.path.join('images', 'ui-tab--plus.png')), "Settings", self)
+        settings_action.setStatusTip("Settings")
+        settings_action.triggered.connect(self.settings)
+        file_menu.addAction(settings_action)
+
         exitButton = QAction('EXIT', self)
         file_menu.addAction(exitButton)
         exitButton.triggered.connect(self.close)
@@ -190,6 +194,10 @@ class MainWindow(QMainWindow):
         navigate_massconceptz_action.setStatusTip("Go to MassConceptZ Homepage")
         navigate_massconceptz_action.triggered.connect(self.navigate_massconceptz)
         help_menu.addAction(navigate_massconceptz_action)
+
+###
+###
+###
 
         navtb.addSeparator()
 
@@ -225,21 +233,22 @@ class MainWindow(QMainWindow):
 ###
 
     def bookmark_tab(self, qurl="Bookmarks", label="Bookmarks"):
-        if qurl == "Bookmarks":
-            qurl = QUrl("file://" + home +"/Downloads/web-browser/bookmarks.dat")
-        browser = QWebEngineView()
-        browser.setUrl(qurl)
-        i = self.tabs.addTab(browser, label)
-        self.tabs.setCurrentIndex(i)
-    
+        import read_bookmarks
 
     def create_bookmark(self):
-        f = QUrl(self.urlbar.text())
-        bookmarked_save = str(f)
-        file_object = open(home +"/Downloads/web-browser/bookmarks.dat",'a')
-        file_object.write(bookmarked_save)
-        file_object.write("\n") 
-        file_object.close()
+        if QUrl(self.urlbar.text()) != 'home +"/Downloads/web-browser/bookmarks.dat"':
+            f = QUrl(self.urlbar.text())
+            bookmarked_save = str(f)
+            file_object = open(home +"/Downloads/web-browser/bookmarks.dat",'a')
+            file_object.write(bookmarked_save)
+            file_object.write("\n") 
+            file_object.close()
+
+    def load_settings_data():
+        config.read("dweb-settings.ini")
+
+    def settings(x,y):
+        import dweb_settings
 
  ###
                                 
