@@ -1,0 +1,5 @@
+https://www.google.com/
+PyQt5.QtCore.QUrl('https://cse.google.com/cse?cx=f31ea6f9d6d284c69#gsc.tab=0')
+PyQt5.QtCore.QUrl('https://www.google.com/')
+PyQt5.QtCore.QUrl('https://www.google.com/')
+PyQt5.QtCore.QUrl('https://www.google.com/')

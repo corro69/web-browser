@@ -1,0 +1,43 @@
+ #       pickle_in = open("bookmarked.dat","rb")
+ #       bookmarked_save = pickle.load(pickle_in)
+ #       extractor = URLExtract()
+#        urls = extractor.find_urls(bookmarked_save)
+#        print(urls)
+#        with open("bookmarks.txt", 'r') as G:
+#            urls = extractor.find_urls(G.read())
+        #    print(G.read())
+#            print (urls)
+#        self.tabs.currentWidget().setUrl(QUrl("bookmarks.txt")) 
+
+
+
+#        extractor = URLExtract()
+#        urls = extractor.find_urls(bookmarked_save)
+#        pickle_out = open("bookmarked.dat","wb")
+#        pickle.dump(bookmarked_save, pickle_out)
+#        pickle_out.close()
+#        print (bookmarked_save)
+
+
+
+####
+####
+###BOOKMARKS MENU
+####
+####
+#        bookmarks_menu = self.menuBar().addMenu("&Bookmarks")
+#
+#        bookmark_action = QAction(QIcon(os.path.join("images",'bookmark.png')),"Create Bookmark",self)
+#        bookmark_action.setStatusTip("Bookmark Current Page")
+#        bookmark_action.triggered.connect(self.create_bookmark)
+#        bookmarks_menu.addAction(bookmark_action)
+#
+#        bookmark_action = QAction(QIcon(os.path.join('images', 'bookmark.png')), "Bookmarks", self)
+#        bookmark_action.setStatusTip("Bookmarks")
+#        bookmark_action.triggered.connect(lambda _: self.bookmark_tab())
+#        bookmarks_menu.addAction(bookmark_action)
+#
+#        tools = bookmarks_menu.addMenu('&Tools')
+#        prevMenu = tools.addMenu('Preview') ##testing ideas
+#        prevAction = prevMenu.addAction('Using &Nuke')  ##testing
+#
